@@ -1,5 +1,5 @@
 //React functionalities
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 //Native components
 import {
@@ -14,11 +14,14 @@ import {
 //Components
 import CustomButton from "../components/CustomButton";
 
-// media
+//Navigazione
+import { useNavigation, useRoute } from "@react-navigation/native";
+
+//Media
 import BackgroundPicture from "../assets/img/BG3.png";
 import Logo from "../assets/img/newLogoWhite.png";
 
-// colori
+//Colori
 const brandColor = "#C40303";
 const secondaryColor = "#7EBB64";
 const tertiaryColor = "#688686";
@@ -27,11 +30,27 @@ const fifthColor = '#445B3A';
 
 const Lobby = (props) => {
 
+    const navigation = useNavigation();
+    const route = useRoute();
+
+    const [lobbyID, setLobbyID] = useState()
+    const [users, setUsers] = useState()
+
     let isDesktop = false;
 
     if (Platform.OS === "web") {
         isDesktop = true;
     }
+
+    useEffect(() => {
+        if (route.params !== undefined) {
+            console.log(route.params)
+            let id = route.params.lobbyID;
+            let users = route.params.users;
+            setLobbyID(id)
+            setUsers(users)
+        }
+    }, [])
 
     const log = () => {
 
@@ -55,26 +74,20 @@ const Lobby = (props) => {
             </View>
 
             <View style={styles.waitView}>
-                <Text style={styles.textWait}>ATTESA GIOCATORI</Text>
+                <Text style={styles.textWait}>LOBBY ID: {lobbyID}</Text>
             </View>
 
             <View style={styles.playersView}>
-                <View style={styles.player}>
-                    <Text>PLAYER 1</Text>
-                    <Text>PRONTO</Text>
-                </View>
-                <View style={styles.player}>
-                    <Text>PLAYER 2</Text>
-                    <Text>PRONTO</Text>
-                </View>
-                <View style={styles.player}>
-                    <Text>PLAYER 3</Text>
-                    <Text>PRONTO</Text>
-                </View>
-                <View style={styles.player}>
-                    <Text>PLAYER 4</Text>
-                    <Text>PRONTO</Text>
-                </View>
+                {
+                    users?.map((obj, key) => {
+                        return (
+                            <View style={styles.player} key={key}>
+                                <Text>{obj.username}</Text>
+                                <Text>PRONTO</Text>
+                            </View>
+                        )
+                    })
+                }
             </View>
 
             <View

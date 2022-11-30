@@ -24,14 +24,17 @@ import { fetchData } from "../utils/fetchData";
 import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
 
-//utils
+//Navigation
+import { useNavigation } from "@react-navigation/native";
+
+//Utils
 //import { getUsers } from "../utils/getUsers";
 
-// media
+//Media
 import BackgroundPicture from "../assets/img/ATBG1.png";
 import Logo from "../assets/img/newLogoWhite.png";
 
-// colori
+//Colori
 const brandColor = "#C40303";
 const secondaryColor = "#7EBB64";
 const tertiaryColor = "#688686";
@@ -47,6 +50,8 @@ let User = {
 let oldUsers;
 
 const Register = (props) => {
+
+    const navigation = useNavigation();
 
     let isDesktop = false;
 
@@ -75,6 +80,12 @@ const Register = (props) => {
         let user = User;
         let res = await fetchData(registrationApi, user);
         console.log(res)
+
+        navigation.navigate('Login')
+    }
+
+    const goToLogin = () => {
+        navigation.navigate('Login')
     }
 
     /*const setOldUsers = async () => {
@@ -171,7 +182,7 @@ const Register = (props) => {
                         isDesktop={isDesktop}
                     />
 
-                    <TouchableOpacity onPress={log}>
+                    <TouchableOpacity onPress={goToLogin}>
                         <Text
                             style={{ color: 'white' }}
                         >

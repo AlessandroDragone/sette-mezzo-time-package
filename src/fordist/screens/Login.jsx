@@ -31,6 +31,9 @@ import CustomButton from "../components/CustomButton";
 import BackgroundPicture from "../assets/img/ATBG1.png";
 import Logo from "../assets/img/newLogoWhite.png";
 
+//Navigation
+import { useNavigation } from "@react-navigation/native";
+
 //Colori
 const brandColor = "#C40303";
 const secondaryColor = "#7EBB64";
@@ -46,6 +49,8 @@ let User = {
 let oldUsers;
 
 const Login = (props) => {
+
+    const navigation = useNavigation();
 
     let isDesktop = false;
 
@@ -65,6 +70,18 @@ const Login = (props) => {
         let user = User;
         let res = await fetchData(signinApi, user)
         console.log(res)
+
+        await AsyncStorage.setItem("token", res?.data?.token);
+        await AsyncStorage.setItem("refreshToken", res?.data?.refreshToken);
+
+        await AsyncStorage.setItem("user", JSON.stringify(res?.data))
+        await AsyncStorage.setItem("userLoggedIn", JSON.stringify(true));
+
+        navigation.navigate('Home')
+    }
+
+    const goToRegister = () => {
+        navigation.navigate('Register')
     }
 
     //   useEffect(() => {
@@ -159,7 +176,7 @@ const Login = (props) => {
                         isDesktop={isDesktop}
                     />
 
-                    <TouchableOpacity onPress={log}>
+                    <TouchableOpacity onPress={goToRegister}>
                         <Text
                             style={{ color: 'white' }}
                         >

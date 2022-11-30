@@ -14,6 +14,7 @@ var _CustomInput = _interopRequireDefault(require("../components/CustomInput"));
 var _CustomButton = _interopRequireDefault(require("../components/CustomButton"));
 var _ATBG = _interopRequireDefault(require("../assets/img/ATBG1.png"));
 var _newLogoWhite = _interopRequireDefault(require("../assets/img/newLogoWhite.png"));
+var _native = require("@react-navigation/native");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -32,6 +33,7 @@ var User = {
 };
 var oldUsers;
 var Login = function Login(props) {
+  var navigation = (0, _native.useNavigation)();
   var isDesktop = false;
   if (_reactNative.Platform.OS === "web") {
     isDesktop = true;
@@ -44,6 +46,7 @@ var Login = function Login(props) {
   };
   var handleLogin = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      var _res$data, _res$data2;
       var user, res;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) {
@@ -55,7 +58,20 @@ var Login = function Login(props) {
             case 3:
               res = _context.sent;
               console.log(res);
-            case 5:
+              _context.next = 7;
+              return _asyncStorage.default.setItem("token", res === null || res === void 0 ? void 0 : (_res$data = res.data) === null || _res$data === void 0 ? void 0 : _res$data.token);
+            case 7:
+              _context.next = 9;
+              return _asyncStorage.default.setItem("refreshToken", res === null || res === void 0 ? void 0 : (_res$data2 = res.data) === null || _res$data2 === void 0 ? void 0 : _res$data2.refreshToken);
+            case 9:
+              _context.next = 11;
+              return _asyncStorage.default.setItem("user", JSON.stringify(res === null || res === void 0 ? void 0 : res.data));
+            case 11:
+              _context.next = 13;
+              return _asyncStorage.default.setItem("userLoggedIn", JSON.stringify(true));
+            case 13:
+              navigation.navigate('Home');
+            case 14:
             case "end":
               return _context.stop();
           }
@@ -66,6 +82,9 @@ var Login = function Login(props) {
       return _ref.apply(this, arguments);
     };
   }();
+  var goToRegister = function goToRegister() {
+    navigation.navigate('Register');
+  };
 
   //   useEffect(() => {
   //     console.log(Platform);
@@ -149,7 +168,7 @@ var Login = function Login(props) {
     label: "LOGIN",
     isDesktop: isDesktop
   }), /*#__PURE__*/_react.default.createElement(_reactNative.TouchableOpacity, {
-    onPress: log
+    onPress: goToRegister
   }, /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
     style: {
       color: 'white'
